@@ -5,7 +5,6 @@
     // Configure Socket
     $host           = '127.0.0.1';
     $port           = '25';
-    $backlog        = '10';
     $max_clients    = '25';
     
     
@@ -31,7 +30,7 @@
     }
     
     // Listen to the socket
-    $server = socket_listen($socket , $backlog);
+    $server = socket_listen($socket , $max_clients);
 
     if(!$server)
     {
