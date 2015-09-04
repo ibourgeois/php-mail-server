@@ -40,7 +40,7 @@
         die("Could not listen on socket : [$errorcode] $errormsg \n");
     }
     
-    $client_socks = array();
+    $client_sockets = array();
     $read = array();
  
     while (true) 
@@ -51,9 +51,9 @@
      
         for ($i = 0; $i < $max_clients; $i++)
         {
-            if($client_socks[$i] != null)
+            if($client_sockets[$i] != null)
             {
-                $read[$i+1] = $client_socks[$i];
+                $read[$i+1] = $client_sockets[$i];
             }
         }
      
@@ -69,18 +69,18 @@
         {
             for ($i = 0; $i < $max_clients; $i++)
             {
-                if ($client_socks[$i] == null) 
+                if ($client_sockets[$i] == null) 
                 {
-                    $client_socks[$i] = socket_accept($socket);
+                    $client_sockets[$i] = socket_accept($socket);
                  
-                    if(socket_getpeername($client_socks[$i], $client_address, $client_port))
+                    if(socket_getpeername($client_sockets[$i], $client_address, $client_port))
                     {
                         echo "Client $client_address : $client_port is now connected to us. \n";
                     }
                  
                     $message = "Welcome to php socket server version 1.0 \n";
                     $message .= "Enter a message and press enter, and i shall reply back \n";
-                    socket_write($client_socks[$i] , $message);
+                    socket_write($client_sockets[$i] , $message);
                     break;
                 }
             }
@@ -88,14 +88,14 @@
  
         for ($i = 0; $i < $max_clients; $i++)
         {
-            if (in_array($client_socks[$i] , $read))
+            if (in_array($client_sockets[$i] , $read))
             {
-                $input = socket_read($client_socks[$i] , 1024);
+                $input = socket_read($client_sockets[$i] , 1024);
              
                 if ($input == null) 
                 {
-                    unset($client_socks[$i]);
-                    socket_close($client_socks[$i]);
+                    socket_close($client_sockets[$i]);
+                    unset($client_sockets[$i]);
                 }
  
                 $n = trim($input);
@@ -104,7 +104,7 @@
              
                 echo "Sending output to client \n";
              
-                socket_write($client_socks[$i] , $output);
+                socket_write($client_sockets[$i] , $output);
             }
         }
     }
