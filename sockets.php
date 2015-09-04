@@ -6,7 +6,7 @@
     $host           = '127.0.0.1';
     $port           = '25';
     $backlog        = '10';
-    $max_clients    = '10';
+    $max_clients    = '25';
     
     
     // Create the socket
